@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Parodont Xəstəlikləri - 15 Təsadüfi Sual</title>
+    <style>
+        :root {
+            --primary: #0f766e;
+            --primary-hover: #115e59;
+            --bg: #f0fdf4;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --correct: #16a34a;
+            --wrong: #dc2626;
+            --border: #cbd5e1;
+            --selected: #0284c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            margin: 0;
+            padding: 15px;
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        header {
+            position: relative;
+            text-align: center;
+            background: var(--card-bg);
+            padding: 24px 18px 18px 18px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        .tangerine-charm {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            font-size: 1.8rem;
+            user-select: none;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+            animation: gentle-sway 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes gentle-sway {
+            0% { transform: rotate(-6deg); }
+            100% { transform: rotate(6deg); }
+        }
+
+        h1 {
+            color: var(--primary);
+            margin: 0 0 6px 0;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        p.subtitle {
+            color: #64748b;
+            margin: 0;
+            font-size: 0.88rem;
+        }
+
+        .quiz-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e2e8f0;
+        }
+
+        .question-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .option-item {
+            margin-bottom: 10px;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            background: #f8fafc;
+            border: 1.5px solid var(--border);
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.92rem;
+            transition: all 0.15s ease-in-out;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+        }
+
+        .option-btn:active {
+            transform: scale(0.99);
+        }
+
+        .option-btn.selected {
+            border-color: var(--selected);
+            background-color: #f0f9ff;
+            font-weight: 600;
+        }
+
+        .option-btn.correct {
+            background-color: #dcfce7 !important;
+            border-color: var(--correct) !important;
+            color: #14532d !important;
+            font-weight: 600;
+        }
+
+        .option-btn.wrong {
+            background-color: #fee2e2 !important;
+            border-color: var(--wrong) !important;
+            color: #7f1d1d !important;
+        }
+
+        .explanation {
+            display: none;
+            margin-top: 14px;
+            padding: 12px 14px;
+            background: #f1f5f9;
+            border-left: 4px solid var(--primary);
+            border-radius: 6px;
+            font-size: 0.88rem;
+            color: #334155;
+        }
+
+        .explanation strong {
+            color: var(--primary);
+        }
+
+        .actions-area {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 24px;
+            margin-bottom: 40px;
+        }
+
+        .main-btn {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .main-btn:active {
+            transform: scale(0.98);
+        }
+
+        .main-btn.secondary {
+            background: #ffffff;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: none;
+        }
+
+        .score-summary {
+            display: none;
+            text-align: center;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .score-summary h2 {
+            margin: 0 0 6px 0;
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+
+        .score-summary p {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <span class="tangerine-charm" title="Uğur narınyası 🍊">🍊</span>
+        <h1>Parodont Xəstəlikləri</h1>
+        <p class="subtitle">50 suallıq bazadan təsadüfi 15 sual</p>
+    </header>
+
+    <div id="score-summary" class="score-summary">
+        <h2>Sınaq Nəticəsi</h2>
+        <p id="score-text"></p>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <div class="actions-area">
+        <button id="check-btn" class="main-btn" onclick="checkAnswers()">Nəticələri Yoxla 📝</button>
+        <button id="reload-btn" class="main-btn secondary" onclick="location.reload()">Sualları Yenidən Qarışdır 🍊</button>
+    </div>
+</div>
+
+<script>
+const rawData = [
+    {
+        q: "Gingivit zamanı iltihabın klinik-morfoloji formasından asılı olmayaraq hansı xarakterik əlamət müşahidə olunur?",
+        options: ["Parodontal ciblərin yaranması", "Rentgenoqramda alveol sümüyünün rezorbsiyası", "Diş-diş əti birləşməsinin tamlığının pozulmaması", "Dişlərin II və III dərəcəli laxlaması", "Bütün hallarda kəskin intoksikasiya"],
+        answer: 2,
+        exp: "Gingivit diş-diş əti birləşməsinin tamlığının pozulmaması ilə keçən diş əti iltihabıdır. Diş əti cibi və rentgenoqramda patologiya əlaməti olmur."
+    },
+    {
+        q: "Kataral gingivit zamanı iltihabi prosesin yayılma dərəcəsinə görə orta ağırlıq dərəcəsi üçün hansı sahələrin zədələnməsi səciyyəvidir?",
+        options: ["Yalnız diş əti məməcikləri", "Diş əti məməcikləri və marginal diş əti", "Bütün diş əti (birləşmiş daxil)", "Yalnız alveol sümüküstlüyü", "Yalnız dil-damaq nahiyəsi"],
+        answer: 1,
+        exp: "Yüngül dərəcədə yalnız diş əti məməcikləri, orta ağırlıqda diş əti məməcikləri və marginal diş əti, ağır formada isə bütün diş əti zədələnir."
+    },
+    {
+        q: "Kataral gingivit zamanı kapillyarların davamlılığının azalmasını və hematomanın əmələgəlmə müddətinin qısalmasını göstərən sınaq hansıdır?",
+        options: ["Şiller-Pisarev sınağı", "Kulajenkonun vakuum sınağı", "Nikolski simptomu", "Mülleman qanama indeksi", "Silnes-Loe indeksi"],
+        answer: 1,
+        exp: "Kulajenkonun vakuum sınağında hematomanın əmələgəlmə müddəti azalır, bu da kapillyarların davamlılığının azalmasından xəbər verir."
+    },
+    {
+        q: "Hipertrofik gingivitin ağırlıq dərəcəsi diş ətinin böyümə səviyyəsinə görə necə qiymətləndirilir?",
+        options: ["Yüngül: 1/2; Orta: 1/3; Ağır: 1/2-dən çox", "Yüngül: 1/3-dən artıq olmayan; Orta: 1/2-yə qədər; Ağır: 1/2-dən çox", "Yüngül: kökün 1/3-i; Orta: kökün 1/2-si; Ağır: bütün kök", "Yüngül: 1/4; Orta: 1/3; Ağır: 3/4", "Yüngül: yalançı cibin olmaması; Orta: 2 mm; Ağır: 6 mm"],
+        answer: 1,
+        exp: "Hipertrofiyanın hündürlüyü: 1/3-dən artıq olmadıqda yüngül, 1/2-yə qədər olduqda orta, 1/2-dən çoxunu örtürsə ağır dərəcə sayılır."
+    },
+    {
+        q: "Hipertrofik gingivitin etiopatogenezində hidantoin sırasından olan qıcolmaəleyhinə preparatların (difenin) qəbulu nəticəsində hansı dəyişiklik yaranır?",
+        options: ["Diş ətinin xoralı-nekrotik dağılması", "Psevdociblər və birləşdirici toxumanın fibroz böyüməsi", "Alveol sümüyünün sürətli osteolizi", "Nikolski simptomunun müsbət olması", "Diş ətinin qanamsız atrofiyası"],
+        answer: 1,
+        exp: "Difenin, nifedipin və siklosporin A qəbulu zamanı psevdociblər və birləşdirici toxumanın fibroz böyüməsi (hiperplaziya) müşahidə olunur."
+    },
+    {
+        q: "Xoralı-nekrotik gingivitin etiopatogenezində aparıcı rol oynayan mikroorqanizmlər hansılardır?",
+        options: ["Streptokoklar və stafilokoklar", "Qram mənfi bakteriyalar və fuzospiroxetlər", "Kandida göbələkləri və laktobasillər", "Qram müsbət koklar və aktinomisetlər", "Hərəkətsiz çubuqvarı viruslar"],
+        answer: 1,
+        exp: "Xoralı gingivitin etiopatogenezində rezistentliyin azalması fonunda Qram mənfi bakteriyalar və fuzospiroxetlər aparıcı rol oynayır."
+    },
+    {
+        q: "Xoralı-nekrotik gingivit zamanı nekrotik ərpin kənar edilməsi nə ilə nəticələnir və dif. diaqnostikada herpetik gingivostomatitdən fərqli olaraq mikroskopiyada nə tapılır?",
+        options: ["Ağrısız sağalma; çoxnüvəli hüceyrələr", "Ağrılı və qanayan xoralı səth; fuzobakteriyalar və spiroxetlər", "Şişkinliyin azalması; laktobasillər", "Sümük açılması; keratinositlər", "İrin axma; streptokoklar"],
+        answer: 1,
+        exp: "Ərpin kənar edilməsi ağrı və qanayan xoralı səth yaradır. Mikroskopiyada fuzobakteriya və spiroxet tapılır (herpesdə isə çoxnüvəli nəhəng hüceyrələr olur)."
+    },
+    {
+        q: "Xronik parodontitin orta ağırlıq dərəcəsi üçün səciyyəvi olan parodontal cibin dərinliyi və rentgenoloji dəyişiklik hansıdır?",
+        options: ["Cib: 4 mm-ə qədər; Sümük itkisi: kökün 1/3-i", "Cib: 4–6 mm; Sümük itkisi: kök uzunluğunun 1/2-inə qədər", "Cib: 6 mm-dən çox; Sümük itkisi: kök uzunluğunun 1/2-dən çoxu", "Cib: yoxdur; Sümük itkisi: yalnız kompakt lövhə rezorbsiyası", "Cib: 8–10 mm; Sümük itkisi: qıfabənzər tam lizis"],
+        answer: 1,
+        exp: "Orta ağırlıqlı parodontitdə parodontal cibin dərinliyi 4-6 mm, sümüyün rezorbsiyası kök uzunluğunun 1/2-nə qədərdir."
+    },
+    {
+        q: "Parodontal abses kəskin pulpitdən əsasən hansı əlamətə görə diferensiasiya olunur?",
+        options: ["Abses zamanı termiki qıcıqlandırıcılardan intensiv ağrıların olması ilə", "Pulpit zamanı termiki qıcıqlandırıcılardan yarandığı halda, absesdə spontan (fasiləsiz) ağrılar və lokal şişkinliyin olması ilə", "Pulpit zamanı dişlərin III dərəcəli laxlaması ilə", "Abses zamanı qanda leykositlərin həmişə normada qalması ilə", "Abses zamanı fistula yalnız kök zirvəsində açılması ilə"],
+        answer: 1,
+        exp: "Pulpit zamanı ağrılar əsasən termiki qıcıqlandırıcılardan yaranır. Absesdə isə spontan (fasiləsiz) ağrılar və məhdud işşkinlik olur."
+    },
+    {
+        q: "Parodontitin aqressiv formalarında (SPP) sitokin balansının pozulması zamanı hansı interleykinlərin superekspressiyası sümük rezorbsiyasını gücləndirir?",
+        options: ["IL-4 və IL-10", "TNF-α və IL-1β", "IL-2 və IFN-γ", "IgA və IgG", "TGF-β və IL-6"],
+        answer: 1,
+        exp: "İltihabi sitokinlərin (TNF-α, IL-1β) superekspressiyası osteoklastların hiperaktivasiyasına təkan verir və sümüyün rezorbsiyasını gücləndirir."
+    },
+    {
+        q: "Sürətlə proqressivləşən parodontit (SPP) zamanı xəstələrin 75%-ində hansı klinik xüsusiyyət diqqəti cəlb edir?",
+        options: ["Diş əti kənarının hiperemiyası və ödeminin nəzərə çarpmaması", "Bütün hallarda kəskin hipertrofiya olması", "Remissiya dövrünün 3 ildən çox çəkməsi", "Yalnız 50 yaşdan yuxarı şəxslərdə təsadüf olunması", "Dişlərin heç vaxt laxlamaması"],
+        answer: 0,
+        exp: "SPP xəstələrinin 75%-ində diş əti kənarının hiperemiyası və ödemi nəzərə çarpmır; iltihab əlamətləri az olsa da dərin ciblər və irin axma olur."
+    },
+    {
+        q: "Parodontoz zamanı parodontitdən fərqli olaraq hansı klinik əlamət müşahidə olunur?",
+        options: ["Dərin irinli parodontal ciblər", "İltihabın olmaması və alveol çıxıntısının yayılmış (üfüqi) azalması", "Diş ətinin al-qırmızı ödemli böyüməsi", "Dişlərin kəskin laxlaması və irinləmə", "Diş əti məməciklərinin nekrozlaşması"],
+        answer: 1,
+        exp: "Parodontoz ilkin distrofik pozuntularla səciyyələnir. Bu zaman iltihab olmur, alveol çıxıntısının hündürlüyünün üfüqi azalması və resessiya müəyyən edilir."
+    },
+    {
+        q: "Parodontozun orta ağırlıq dərəcəsi üçün xarakterik olan diş əti resessiyasının ölçüsü və dişlərdə tez-tez rast gəlinən qeyri-karioz zədələnmə hansıdır?",
+        options: ["Resessiya: 3 mm-ə qədər; Emal çatları", "Resessiya: 3–5 mm; Pazabənzər qüsurlar", "Resessiya: 5 mm-dən artıq; Nekroz", "Resessiya: yoxdur; Floreoz", "Resessiya: 8 mm; Ərözit"],
+        answer: 1,
+        exp: "Orta dərəcəli parodontozda generalizəolunmuş diş əti resessiyası 3-5 mm olur və dişlərin vestibulyar səthində pazabənzər qüsurlar əmələ gəlir."
+    },
+    {
+        q: "P.D. Miller təsnifatına görə III sinif diş əti resessiyasının xüsusiyyəti və cərrahi proqnozu nədir?",
+        options: ["Resessiya birləşmiş diş əti hüdudundadır; kökün tam bağlanması mümkündür", "Resessiya birləşməmiş diş ətinə çatır; kökün tam bağlanması mümkündür", "Resessiya II siniflə yanaşı aproksimal səthlərin zədələnməsi ilə müştərəkdir; kökün tam bağlanması mümkün deyil", "Dişarası sümük itkisi sirkulyardır; tam bərpa olunur", "Yalnız bir dişdə Ştilman yarığıdır; müalicəsiz keçir"],
+        answer: 2,
+        exp: "Miller təsnifatına görə III sinif resessiya aproksimal səthlərin zədələnməsi (sümük/diş əti itkisi) ilə keçir və cərrahi olaraq kökün tam bağlanması mümkün deyil."
+    },
+    {
+        q: "İdiopatik parodont xəstəliklərindən olan Desmodontoz üçün hansı ilkin klinik mənzərə səciyyəvidir?",
+        options: ["Bütün dişlərin birdən-birə kəskin irinləməsi", "İltihab olmadan mərkəzi kəsici dişlərin və birinci molyarların laxlaması və miqrasiyası", "Dodaq və dildə Uikhem torunun əmələ gəlməsi", "Yalnız aşağı premolyarların kəskin nekrozu", "Diş ətinin al-qırmızı rəngdə hipertrofiyası"],
+        answer: 1,
+        exp: "Desmodontozun başlanğıc mərhələsində iltihab olmadan mərkəzi kəsici dişlərin və 1-ci molyarların laxlaması və yerdəyişməsi qeyd edilir."
+    },
+    {
+        q: "Akatalaziya (Taxakara xəstəliyi) zamanı hidrogen peroksidin toplanmasının patogenetik səbəbi və xarakterik sınaq əlaməti nədir?",
+        options: ["Katalaza fermentinin çatışmazlığı; yaraya hidrogen peroksid vurduqda qanın rənginin qara rəngə dəyişməsi", "Zülal çatışmazlığı; müsbət Nikolski simptomu", "C vitamini çatışmazlığı; Uikhem toru", "B12 defisiti; dildə hamarlaşma", "İnsulin azlığı; qanda şəkərin düşməsi"],
+        answer: 0,
+        exp: "Katalaza fermenti olmadıqda hidrogen peroksid parçalanmır, hemoqlobini methemoqlobinə çevirir və hidrogen peroksid vurulduqda qan ani olaraq qara rəng alır."
+    },
+    {
+        q: "Papiyon-Lefevr sindromunun səciyyəvi klinik triadasına nə aiddir?",
+        options: ["Damaq yarası, hemorragik səpki, böyrək çatışmazlığı", "Ovuc və ayaqaltının hiperkeratozu, çatlaması və proqressivləşən destruktiv parodontit", "Şəkərsiz diabet, ekzoftalm və 'coğrafi kəllə'", "Hipoxrom anemiya, splenomeqaliya və Qoşe hüceyrələri", "Dəri sarılığı, hepatomeqaliya və proteinuriya"],
+        answer: 1,
+        exp: "Papiyon-Lefevr sindromunda ovuc və ayaqaltının nəzərəçarpan hiperkeratozu, soyulması, çatları və proqressivləşən destruktiv parodontit (dişlərin tökülməsi) müşahidə edilir."
+    },
+    {
+        q: "Hend-Şüller-Krisçen sindromu (yayılmış xronik histiositoz) üçün xarakterik olan əlamətlər triadası hansıdır?",
+        options: ["Hipertrixoz, demensiya, neyrofibromatoz", "Şəkərsiz diabet, ekzoftalm, yastı sümüklərdə şişəbənzər törəmələr ('coğrafi' kəllə)", "Ovuc giperkeratozu, laktasiya pozuntusu, gipotoniya", "Akantoliz, leykopeniya, bradikardiya", "Karotit, stomatit, otit"],
+        answer: 1,
+        exp: "Hend-Şüller-Krisçen sindromu şəkərsiz diabet, ekzoftalm və yastı sümüklərdə şişəbənzər törəmələr ('coğrafi' kəllə) ilə müşayiət olunur."
+    },
+    {
+        q: "Gingivitin hipertrofik forması ilə Diş Ətinin Fibromatozu arasındakı əsas diferensial fərq nədir?",
+        options: ["Fibromatoz zamanı diş əti yumşaq və al-qırmızı olur", "Fibromatoz şişəbənzər proseslərə aiddir, nəinki məməciklərin, hətta alveolun diş ətinin qalınlaşması ilə səciyyələnir", "Fibromatoz yalnız kəskin infeksiyada yaranır", "Fibromatozda diş əti toxunduqda şiddətli qanayır", "Fibromatoz zamanı yalançı ciblər heç vaxt olmur"],
+        answer: 1,
+        exp: "Diş əti fibromatozu şişəbənzər proseslərə aiddir və nəinki məməciklərin, hətta alveol çıxıntısının diş ətinin qalınlaşması ilə hipertrofik gingivitdən fərqlənir."
+    },
+    {
+        q: "Angiomatoz epulisin klinik-morfoloji xüsusiyyətinə hansı aid EDİLMİR?",
+        options: ["Girdə, al-qırmızı və ya göyümtül çalarlı yumşaq-elastik törəmə olması", "Palpasiya zamanı kəskin qanaması", "Hamiləlik dövründə tez böyüməyə meyilli olması", "Histoloji olaraq çoxsaylı qan damarlarının olması", "Bərk, solğun-çəhrayı, qanamayan və yalnız ağrısız fibroz liflərdən ibarət olması"],
+        answer: 4,
+        exp: "Angiomatoz epulis yumşaq-elastikdir və kəskin qanayır. 'Bərk, solğun-çəhrayı, qanamayan' xüsusiyyət Fibroz epulisə aiddir."
+    },
+    {
+        q: "Lokallaşmış gingivitlə generalizəolunmuş gingivit arasındakı əsas fərq nədir?",
+        options: ["Lokallaşmış 1-4 diş nahiyəsində, generalizəolunmuş isə aşağı və yuxarı dişlər nahiyəsində olur", "Lokallaşmış yalnız uşaqlarda, generalizəolunmuş yalnız qocalarda rast gəlinir", "Lokallaşmış zamanı parodontal cib olur, generalizəolunmuşda olmur", "Lokallaşmış zamanı həmişə sümük rezorbsiyası baş verir", "Fərq yalnız dişlərin rəngindədir"],
+        answer: 0,
+        exp: "Mətnə görə: Prosesin yayılmasına görə gingivitin lokallaşmış (1-4 diş nahiyəsində) və generalizəolunmuş (aşağı və yuxarı dişlər nahiyəsində) formaları ayırd edilir."
+    },
+    {
+        q: "Xronik kataral gingivit zamanı diş əti kənarının forması və rəngi necə dəyişir?",
+        options: ["Dişarası məməciklər göyümtül çalar alır, marginal hissə yastığabənzər forma alır", "Bütün diş əti bozumtul nekrotik ərpilə örtülür", "Diş əti anemik və bərk olur", "Diş əti kənarı tamamilə atrofiyaya uğrayır", "Diş ətində qabarcıqlı törəmələr əmələ gəlir"],
+        answer: 0,
+        exp: "Xronik kataral gingivit zamanı dişarası məməciklər göyümtül çalar, marginal hissə isə yastığabənzər forma alır."
+    },
+    {
+        q: "Kataral gingivit zamanı epitel hüceyrələrində qlikogenin toplanması hesabına hansı sınaq müsbət olur?",
+        options: ["Şiller-Pisarev sınağı", "Vakuum sınağı", "Nikolski sınağı", "Histamin sınağı", "Benzidin sınağı"],
+        answer: 0,
+        exp: "İltihab nəticəsində epitel hüceyrələrində qlikogenin toplanması hesabına müsbət Şiller-Pisarev sınağı qeyd olunur."
+    },
+    {
+        q: "Hipertrofik gingivitin hansı forması klinik praktikada daha tez-tez rast gəlinir?",
+        options: ["Ödemli forma", "Fibroz forma", "Nekrotik forma", "Xoralı forma", "Atrofik forma"],
+        answer: 0,
+        exp: "Klinik-morfoloji əlamətlərə görə ödemli və fibroz formalar ayırd edilir, lakin ödemli formaya daha tez-tez təsadüf edilir."
+    },
+    {
+        q: "Hipertrofik gingivitin əsasən hansı dişlər nahiyəsində lokallaşması səciyyəvidir?",
+        options: ["Frontal dişlər nahiyəsi", "Böyük azı dişləri nahiyəsi", "Yalnız üçüncü molyarlar nahiyəsi", "Yalnız premolyarlar nahiyəsi", "Aşağı molyarlar nahiyəsi"],
+        answer: 0,
+        exp: "Hipertrofik gingivitin prosesinin səciyyəvi lokalizasiyası frontal dişlər nahiyəsidir."
+    },
+    {
+        q: "Yeniyetmələrdə pubertat dövrdə hipertrofik gingivitin yaranmasına səbəb olan hormonlar hansılardır?",
+        options: ["Progesteron, estradiol və boy hormonu", "İnsulin və tiroksin", "Adrenalin və noradrenalin", "Kortizol və aldestoron", "Parathormon və kalsitonin"],
+        answer: 0,
+        exp: "Yeniyetmələrdə bu xəstəlik damarların keçiriciliyini gücləndirən cinsiyyət hormonlarının (progesteron, estradiol) və boy hormonunun artmasının nəticəsidir."
+    },
+    {
+        q: "Hipertrofik gingivitin fibroz formasının obyektiv müayinəsində diş əti necə görünür?",
+        options: ["Bərk, solğun-çəhrayı rəngli, qabarcıqlı səthi olan, qanamayan", "Al-qırmızı, kövşək, toxunduqda şiddətli qanayan", "Boz-qara rəngdə, nekrotik ərp ilə örtülmüş", "Sarımtıl rəngdə, irinli ifrazatlı", "Nazikləşmiş, kəskin atrofiyalaşmış"],
+        answer: 0,
+        exp: "Hipertrofik gingivitin fibroz formasında bərk, solğun-çəhrayı rəngli, qabarcıqlı səthi olan böyümüş diş əti aşkar edilir. Qanama olmur."
+    },
+    {
+        q: "Xoralı-nekrotik gingivit inkişaf etmiş ölkələrdə daha çox hansı yaş qrupunda rast gəlinir?",
+        options: ["18-30 yaşlarda", "1-5 yaşlı uşaqlarda", "60 yaşdan yuxarı şəxslərdə", "Yalnız yenidoğulmuşlarda", "45-55 yaşlı qadınlarda"],
+        answer: 0,
+        exp: "Sənayesi inkişaf etmiş ölkələrdə xoralı gingivit 2-7% tezliklə 18-30 yaşlarda rast gəlinir, uşaqlarda grafik olaraq qeyd olunmur."
+    },
+    {
+        q: "Xoralı-nekrotik gingivit zamanı nekrozlaşmış toxumalardan ibarət ərpin rəngi necə olur?",
+        options: ["Sarımtıl-ağ və ya bozumtul", "Al-qırmızı", "Göy-bənövşəyi", "Qara-qəhvəyi", "Şəffaf-yaşıl"],
+        answer: 0,
+        exp: "Nekrotik sahələrin səthində sarımtıl-ağ və ya bozumtul rəngli, çətin kənar edilən yumşaq ərp əmələ gəlir."
+    },
+    {
+        q: "Xoralı gingivitin kəskin dövründən sonra sağalan zaman orta və ağır dərəcələrdə hansı dönməyən qüsur qalır?",
+        options: ["Diş ətinin postnekrotik qüsurları (məməciklərin zirvələri kəsilib) və boyunların açılması", "Dişlərin tam bitişməsi", "Alveol sümüyünün hipertrofiyası", "Diş emalının tündləşməsi", "Dodaqlarda çatların qalması"],
+        answer: 0,
+        exp: "Orta və ağır dərəcəli xoralı gingivit zamanı diş ətinin postnekrotik qüsurları (diş əti məməciklərinin zirvələri sanki kəsilib) və dişlərin boyunlarının açılması dönməyən süreçdir."
+    },
+    {
+        q: "Parodontit zamanı formalaşan əsas fərqləndirici patoloji struktur hansıdır?",
+        options: ["Parodontal cib", "Yalançı cib", "Uikhem toru", "Pazabənzər qüsur", "Gingival fibroma"],
+        answer: 0,
+        exp: "Periodont bağının və alveol çıxıntısının sümük toxumalarının destruksiyası müşahidə olunur ki, bunun nəticəsində parodontitin əsas fərqləndirici əlaməti olan parodontal ciblər formalaşır."
+    },
+    {
+        q: "Xronik parodontitin yüngül dərəcəsində rentgenoqramda hansı dəyişiklik müşahidə edilir?",
+        options: ["Dişarası çəpərin zirvəsində kompakt lövhənin rezorbsiyası, hündürlüyün kökün 1/3-i qədər azalması", "Sümük çəpərinin kök uzunluğunun 1/2-nə qədər rezorbsiyası", "Sümüyün tam qıfabənzər lizisi", "Osteoskleroz ocaqlarının olması", "Heç bir rentgenoloji dəyişiklik olmur"],
+        answer: 0,
+        exp: "Yüngül parodontitdə rentgenoloji dəyişikliklərə dişarası çəpərin zirvəsində kompakt lövhənin rezorbsiyası və onların hündürlüyünün kökün 1/3-i qədər azalması aiddir."
+    },
+    {
+        q: "Xronik parodontitin ağır dərəcəsi zamanı parodontal ciblərin dərinliyi və dişlərin laxlaması necə olur?",
+        options: ["Cib 6 mm və daha çox; Laxlama II və III dərəcəli", "Cib 2 mm; Laxlama olmur", "Cib 4 mm; Laxlama I dərəcəli", "Cib olmur; Laxlama III dərəcəli", "Cib 1 mm; Laxlama yalnız protez olduqda"],
+        answer: 0,
+        exp: "Ağır dərəcəli parodontitdə parodontal ciblərin dərinliyi 6 mm və daha çox olur, dişlərin II və III dərəcəli laxlaması müşahidə olunur."
+    },
+    {
+        q: "Parodontal abses zamanı irinlik kökün hansı nahiyələrində lokalizasiya oluna bilər?",
+        options: ["Kökün zirvəsi, orta hissəsi və boyunətrafı nahiyədə", "Yalnız emal səthində", "Yalnız tacın çeynəmə səthində", "Yalnız pulpa kamerasında", "Yalnız dilaltı yüyəndə"],
+        answer: 0,
+        exp: "Abses kökün zirvəsi, orta hissəsi və boyunətrafı nahiyədə lokalizasiya oluna bilər."
+    },
+    {
+        q: "Ağırlıq dərəcəsindən asılı olmayaraq parodontitin remissiya mərhələsi nə ilə xarakterizə olunur?",
+        options: ["İltihabın olmaması, diş ətinin sıx, çəhrayı olması, ciblərin olmaması", "Bol irin ifrazı və kəskin ağrı", "Dişlərin sürətlə tökülməsi", "Diş ətinin al-qırmızı ödemi", "Bədən hərarətinin 39°C olması"],
+        answer: 0,
+        exp: "Ağırlıq dərəcəsindən asılı olmayaraq parodontitin remissiya mərhələsi iltihabın olmaması ilə xarakterizə olunur. Diş əti sıx, çəhrayı rəngdədir. Ciblər yoxdur."
+    },
+    {
+        q: "Sürətlə proqressivləşən parodontit (SPP) terminini ilk dəfə 1975-ci ildə kim istifadə etmişdir?",
+        options: ["A. Crawford", "Girolamo Cardano", "P.D. Miller", "C. Parma", "F. Qoşe"],
+        answer: 0,
+        exp: "Yalnız 1975-ci ildə A. Crawford rentgenoloji olaraq parodont toxumalarının fəal destruksiyasını təsvir edərkən 'sürətlə proqressivləşən parodontit' terminini istifadə etmişdir."
+    },
+    {
+        q: "Parodontitin atipik aqressiv formalarının gənclərdə çox aqressiv keçdiyini ilk dəfə kim qeyd etmişdir (1501-1576)?",
+        options: ["Girolamo Cardano", "A. Crawford", "Lichtenstein", "Papiyon və Lefevr", "Silnes və Loe"],
+        answer: 0,
+        exp: "Parodontitin atipik formalarının mövcudluğunu ilk dəfə italyan həkimi Girolamo Cardano (1501-1576) qeyd etmişdir."
+    },
+    {
+        q: "SPP zamanı xəstəliyin klinik gedişi necə xarakterizə olunur?",
+        options: ["Dalğavari gediş (qısa remissiya kəskinləşmə ilə əvəz olunur)", "Monoton və heç vaxt dəyişməyən", "1 günə tam bərpa olunan", "Yalnız yay aylarında kəskinləşən", "Simptomsuz və sümük zədələnməsi olmadan"],
+        answer: 0,
+        exp: "SPP zamanı xəstəliyin gedişi dalğavaridir, qısa remissiya (3 aydan az) kəskinləşmə dövrləri ilə əvəz olunur."
+    },
+    {
+        q: "Parodontoz zamanı ilkin olaraq hansı xarakterli pozuntular baş verir?",
+        options: ["İlkin distrofik pozuntular", "Kəskin irinli iltihab", "Birləşdirici toxumanın hiperplastik böyüməsi", "Mantar infeksiyası", "Allergik nekroz"],
+        answer: 0,
+        exp: "Parodontoz ilkin distrofik pozuntularla səciyyələnən, yetkin yaşlı xəstələrdə təsadüf edilən parodont toxumalarının xəstəliyidir."
+    },
+    {
+        q: "Parodontoz zamanı xəstələrin ən çox şikayət etdiyi diş hissiyatı dəyişikliyi hansıdır?",
+        options: ["Dişin sərt toxumalarının hiperesteziyası (həssaslıq)", "Dişin tam hissiyyatsızlaşması", "Dişlərdə dad bilmənin itməsi", "Dişlərin soyuqda bərkiməsi", "Dişlərin rezin kimi yumşalması"],
+        answer: 0,
+        exp: "Temperatur və kimyəvi qıcıqlandırıcıların təsirindən intakt dişlərdə ağrılar (dişin sərt toxumalarının hiperesteziyası) qeyd edilir."
+    },
+    {
+        q: "Parodontoz zamanı rentgenoloji müayinədə sümük toxumasında hansı mənzərə görünür?",
+        options: ["Sklerotik yenidənqurma, kortikal lövhə saxlanılıb, osteoporoz ocaqları yoxdur", "Dərin qıfabənzər destruksiya və osteoporoz ocaqları", "Sümüyün tam olmaması (osteoliz)", "Kistoz boşluqlar", "Sümük boyu çoxlu osteofitlər"],
+        answer: 0,
+        exp: "Parodontozun rentgenoloji şəkli sklerotik yenidənqurma ilə təzahür edir. Kortikal lövhə saxlanılmışdır, osteoporoz ocaqları mövcud deyildir."
+    },
+    {
+        q: "Millerə görə I sinif diş əti resessiyası harada yerləşir və proqnozu necədir?",
+        options: ["Birləşmiş diş əti hüdudundadır; kökün tam bağlanması mümkündür", "Birləşməmiş diş ətinə çatır; bağlanması mümkün deyil", "Sirkulyar sümük itkisidir; proqnoz yoxdur", "Aproksimal zədələnmədir; proqnoz pisdir", "Dilaltı sahədədir; əməliyyat olunmur"],
+        answer: 0,
+        exp: "I sinif resessiya birləşmiş diş əti hüdudundadır. Dişarası sümük/diş əti itkisi olmur. Proqnoz: kökün tam bağlanması mümkündür."
+    },
+    {
+        q: "Miller təsnifatına görə Ştilman yarığı (dar qüsur) hansı yarımsinifə aiddir?",
+        options: ["A yarımsinifi", "B yarımsinifi", "C yarımsinifi", "D yarımsinifi", "E yarımsinifi"],
+        answer: 0,
+        exp: "Miller təsnifatında A yarımsinifi - dar (Ştilman yarığı), B yarımsinifi - enli (Makkola qüsuru) kimi bölünür."
+    },
+    {
+        q: "P.D. Miller təsnifatına görə IV sinif resessiya nə ilə xarakterizə olunur?",
+        options: ["Dişarası sahələrdə sirkulyar diş əti və sümük itkisi baş verir; kökün bağlanması mümkün deyil", "Yalnız məməciklərin böyüməsi ilə", "Kökün 100% tam bərpası ilə", "Yalnız süni qapaqlar altında əmələ gəlməsi ilə", "Iltihabi irinləmə ilə"],
+        answer: 0,
+        exp: "IV sinif resessiyada dişarası sahələrdə diş ətinin və sümüyün itkisi baş verir (sirkulyar). Proqnoz: kökün bağlanması mümkün deyil."
+    },
+    {
+        q: "Letterer-Zive sindromu əsasən hansı yaşda olan uşaqlarda rast gəlinir?",
+        options: ["3 yaşından kiçik uşaqlarda", "12-15 yaşlı yeniyetmələrdə", "18-25 yaşlı tələbələrdə", "Yalnız 50 yaşdan yuxarı", "Yeni doğulmuş ilk saatlarda"],
+        answer: 0,
+        exp: "Letterer-Zive sindromu daha çox 3 yaşından kiçik uşaqlarda rast gəlir. Xəstəlik kəskin başlayır, yüksək hərarətlə keçir."
+    },
+    {
+        q: "Eozinofil qranuloma (Taratınov xəstəliyi) kəllə və üz skeletində ən çox harada lokallaşır?",
+        options: ["Alt çənənin alveol çıxıntısı və şaxəsində", "Yuxarı çənə cibsində", "Burun sümüyündə", "Göz yuvası sümüyündə", "Ənsə sümüyündə"],
+        answer: 0,
+        exp: "Proses kəllə və üz skeletinin sümüklərində, lakin əsasən alt çənənin alveol çıxıntısı və şaxəsində lokallaşır."
+    },
+    {
+        q: "Qoşe xəstəliyi (keratinli retikulohistiositoz) hansı fermentin çatışmazlığı ilə bağlıdır?",
+        options: ["Qlükoserebrozidaza", "Katalaza", "Kollagenaza", "Amilaza", "Alkalen fosfataza"],
+        answer: 0,
+        exp: "Ehtimal edilir ki, qüsur normada qlükoserebrozidləri parçalayan qlükoserebrozidazanın çatışmazlığı ilə əlaqədardır."
+    },
+    {
+        q: "Qoşe xəstəliyinin xarakterik diaqnostik əlaməti dalaqda və sümük iliyində nəyin tapılmasıdır?",
+        options: ["Qoşe hüceyrələrinin olması", "Çoxnüvəli herpes hüceyrələri", "Aktiv streptokoklar", "Uikhem torları", "Osteofitlər"],
+        answer: 0,
+        exp: "Xəstəliyin səciyyəvi əlaməti dalaqda və sümük iliyində Qoşe hüceyrələrinin olmasıdır."
+    },
+    {
+        q: "Şəkərli diabet zamanı diş əti damarlarında hansı spesifik morfoloji dəyişiklik aşkar edilir?",
+        options: ["Mikroangiopatiya (damar divarlarının hialinozu və sklerozu)", "Damarların tam yox olması", "Kavernoz hemangiomalar", "Varikoz genişlənmə", "Anevrizmalar"],
+        answer: 0,
+        exp: "Şəkərli diabet zamanı diş ətində spesifik mikroangiopatiya əlamətləri... damar divarlarının hialinozu və sklerozu, mənfəzin obliterasiyası qeyd olunur."
+    },
+    {
+        q: "Epulis nədir və ən çox kimlərdə rast gəlinir?",
+        options: ["Göbələk formasında şişəbənzər törəmədir; qadınlarda kişilərə nisbətən 3-4 dəfə çox rast gəlinir", "Kəskin infeksion xəstəlikdir; yalnız kişilərdə olur", "Sümük kistasıdır; uşaqlarda olmur", "Diş emalının eroziyasıdır; yaşlılarda olur", "Dilaltı vəzi iltihabıdır"],
+        answer: 0,
+        exp: "Epulis göbələk formasında şişəbənzər birləşdirici toxuma törəməsidir. Qadınlarda kişilərlə müqayisədə epulis 3-4 dəfə daha tez rast gəlir."
+    }
+];
+
+let selectedIndices = [];
+let userAnswers = {};
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function getRandom15Questions() {
+    let indices = Array.from({length: rawData.length}, (_, i) => i);
+    shuffleArray(indices);
+    return indices.slice(0, 15);
+}
+
+function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = '';
+    selectedIndices = getRandom15Questions();
+    userAnswers = {};
+
+    selectedIndices.forEach((qIdx, displayIdx) => {
+        const qData = rawData[qIdx];
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = `card-${displayIdx}`;
+
+        const qTitle = document.createElement('div');
+        qTitle.className = 'question-title';
+        qTitle.innerText = `${displayIdx + 1}. ${qData.q}`;
+        card.appendChild(qTitle);
+
+        const optionsList = document.createElement('ul');
+        optionsList.className = 'options-list';
+
+        // Prepare option shuffle while preserving correct target
+        let optionsWithMeta = qData.options.map((optText, origIndex) => ({
+            text: optText,
+            isCorrect: origIndex === qData.answer,
+            origIndex: origIndex
+        }));
+        
+        shuffleArray(optionsWithMeta);
+        card.dataset.optionsMeta = JSON.stringify(optionsWithMeta);
+
+        optionsWithMeta.forEach((optObj, oIndex) => {
+            const li = document.createElement('li');
+            li.className = 'option-item';
+
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.id = `btn-${displayIdx}-${oIndex}`;
+            btn.innerText = `${String.fromCharCode(65 + oIndex)}) ${optObj.text}`;
+
+            btn.onclick = () => selectOption(displayIdx, oIndex);
+
+            li.appendChild(btn);
+            optionsList.appendChild(li);
+        });
+
+        const expDiv = document.createElement('div');
+        expDiv.className = 'explanation';
+        expDiv.id = `exp-${displayIdx}`;
+        expDiv.innerHTML = `<strong>İzah:</strong> ${qData.exp}`;
+
+        card.appendChild(optionsList);
+        card.appendChild(expDiv);
+        container.appendChild(card);
+    });
+
+    document.getElementById('score-summary').style.display = 'none';
+    document.getElementById('check-btn').style.display = 'block';
+}
+
+function selectOption(qDisplayIdx, optDisplayIdx) {
+    userAnswers[qDisplayIdx] = optDisplayIdx;
+    
+    // Clear selected style for this card
+    const card = document.getElementById(`card-${qDisplayIdx}`);
+    const btns = card.querySelectorAll('.option-btn');
+    btns.forEach(b => b.classList.remove('selected'));
+
+    // Highlight chosen
+    const selectedBtn = document.getElementById(`btn-${qDisplayIdx}-${optDisplayIdx}`);
+    if (selectedBtn) {
+        selectedBtn.classList.add('selected');
+    }
+}
+
+function checkAnswers() {
+    let score = 0;
+
+    selectedIndices.forEach((qIdx, displayIdx) => {
+        const card = document.getElementById(`card-${displayIdx}`);
+        const optionsMeta = JSON.parse(card.dataset.optionsMeta);
+        const userChoice = userAnswers[displayIdx];
+
+        const btns = card.querySelectorAll('.option-btn');
+        btns.forEach(b => {
+            b.disabled = true;
+            b.classList.remove('selected');
+        });
+
+        optionsMeta.forEach((optObj, oIndex) => {
+            const btn = document.getElementById(`btn-${displayIdx}-${oIndex}`);
+            if (optObj.isCorrect) {
+                btn.classList.add('correct');
+            }
+            if (userChoice === oIndex && !optObj.isCorrect) {
+                btn.classList.add('wrong');
+            }
+        });
+
+        if (userChoice !== undefined && optionsMeta[userChoice].isCorrect) {
+            score++;
+        }
+
+        const expDiv = document.getElementById(`exp-${displayIdx}`);
+        expDiv.style.display = 'block';
+    });
+
+    // Display total score
+    const scoreSummary = document.getElementById('score-summary');
+    const scoreText = document.getElementById('score-text');
+    scoreText.innerText = `${selectedIndices.length} sualdan ${score} doğru cavab verdiniz! (${Math.round((score/15)*100)}%)`;
+    scoreSummary.style.display = 'block';
+
+    // Scroll smoothly to top score summary
+    scoreSummary.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('check-btn').style.display = 'none';
+}
+
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
